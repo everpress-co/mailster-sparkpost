@@ -41,7 +41,7 @@ class MailsterSparkPost {
 
 			add_filter( 'mailster_verify_options', array( &$this, 'verify_options' ) );
 
-			if ( mailster_option( 'deliverymethod' ) == MAILSTER_SPARKPOST_ID ) {
+			if ( mailster_option( 'deliverymethod' ) == 'sparkpost' ) {
 				add_action( 'mailster_initsend', array( &$this, 'initsend' ) );
 				add_action( 'mailster_presend', array( &$this, 'presend' ) );
 				add_action( 'mailster_dosend', array( &$this, 'dosend' ) );
@@ -280,7 +280,7 @@ class MailsterSparkPost {
 	 * @return void
 	 */
 	public function delivery_method( $delivery_methods ) {
-		$delivery_methods[ MAILSTER_SPARKPOST_ID ] = 'SparkPost';
+		$delivery_methods['sparkpost'] = 'SparkPost';
 		return $delivery_methods;
 	}
 
@@ -437,7 +437,7 @@ class MailsterSparkPost {
 	 */
 	public function verify_options( $options ) {
 
-		if ( $options['deliverymethod'] == MAILSTER_SPARKPOST_ID ) {
+		if ( $options['deliverymethod'] == 'sparkpost' ) {
 
 			$old_apikey = mailster_option( 'sparkpost_apikey' );
 
@@ -658,7 +658,7 @@ class MailsterSparkPost {
 	public function deactivate() {
 
 		if ( function_exists( 'mailster' ) ) {
-			if ( mailster_option( 'deliverymethod' ) == MAILSTER_SPARKPOST_ID ) {
+			if ( mailster_option( 'deliverymethod' ) == 'sparkpost' ) {
 				mailster_update_option( 'deliverymethod', 'simple' );
 				mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', false, 'delivery_method' );
 			}
