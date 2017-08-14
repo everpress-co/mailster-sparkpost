@@ -109,17 +109,8 @@ class MailsterSparkPost {
 
 		$mailobject->pre_send();
 
-		$tracking_options = mailster_option( 'sparkpost_track' );
-		$tags = mailster_option( 'sparkpost_tags' );
-		$subaccount = mailster_option( 'sparkpost_subaccount' );
-
-		$open_tracking = 'open' == $tracking_options || 'open,clicks' == $tracking_options;
-		$clicks_tracking = 'clicks' == $tracking_options || 'open,clicks' == $tracking_options;
-
 		$mailobject->sparkpost_object = array(
 			'options' => array(
-				'open_tracking' => $open_tracking,
-				'click_tracking' => $clicks_tracking,
 				'transactional' => ! empty( $mailobject->campaignID ),
 				'ip_pool' => 'sp_shared',
 				'inline_css' => false,
@@ -130,10 +121,17 @@ class MailsterSparkPost {
 				'subscriber_id' => $mailobject->subscriberID,
 				'message_id' => $mailobject->messageID,
 			),
-			'campaign_id' => $mailobject->campaignID ? '#' . $mailobject->campaignID . ' ' . get_the_title( $mailobject->campaignID ) : null,
+			'campaign_id' => $mailobject->campaignID ? substr( '#' . $mailobject->campaignID . ' ' . esc_attr( get_the_title( $mailobject->campaignID ) ), 0, 64 ) : null,
 		);
 
-		if ( $tags ) {
+		if ( $tracking_options = mailster_option( 'sparkpost_track' ) ) {
+			$open_tracking = 'opens' == $tracking_options || 'opens,clicks' == $tracking_options;
+			$click_tracking = 'clicks' == $tracking_options || 'opens,clicks' == $tracking_options;
+			$mailobject->sparkpost_object['options']['open_tracking'] = $open_tracking;
+			$mailobject->sparkpost_object['options']['click_tracking'] = $click_tracking;
+		}
+
+		if ( $tags = mailster_option( 'sparkpost_tags' ) ) {
 			$mailobject->sparkpost_object['tags'] = array_map( 'trim', explode( ',', $tags ) );
 		}
 
@@ -440,8 +438,9 @@ class MailsterSparkPost {
 		if ( $options['deliverymethod'] == 'sparkpost' ) {
 
 			$old_apikey = mailster_option( 'sparkpost_apikey' );
+			$old_delivery_method = mailster_option( 'deliverymethod' );
 
-			if ( $old_apikey != $options['sparkpost_apikey'] || ! $options['sparkpost_verified'] ) {
+			if ( $old_apikey != $options['sparkpost_apikey'] || ! $options['sparkpost_verified'] || $old_delivery_method != 'sparkpost' ) {
 				$response = $this->verify( $options['sparkpost_apikey'], $options['sparkpost_subaccount'] );
 
 				if ( is_wp_error( $response ) ) {
@@ -453,7 +452,6 @@ class MailsterSparkPost {
 
 					$options['send_limit'] = $usage->day->limit;
 
-					// update_option( '_transient_timeout__mailster_send_period_timeout', strtotime( $usage->day->end ) );
 					update_option( '_transient__mailster_send_period', $usage->day->used );
 
 					$options['sparkpost_verified'] = true;
@@ -582,7 +580,7 @@ class MailsterSparkPost {
 	/**
 	 * section_tab_bounce function.
 	 *
-	 * displays a note on the bounce tab (Mailster >= 1.6.2)
+	 * displays a note on the bounce tab
 	 *
 	 * @access public
 	 * @param mixed $options

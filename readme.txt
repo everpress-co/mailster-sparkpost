@@ -1,9 +1,9 @@
-=== Mailster SparkPost ===
+=== Mailster SparkPost Integration ===
 Contributors: everpress, revaxarts
 Tags: sparkpost, mailster, deliverymethod, newsletter, mailsteresp, email
 Requires at least: 3.8
 Tested up to: 4.8.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 Author: EverPress
 Author URI: https://mailster.co
@@ -29,6 +29,11 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 1. Option Interface.
 
 == Changelog ==
+
+= 1.1 =
+
+* fixed: issue when campaign titles have more than 64 characters
+* fixed "Track in SparkPost" option now working as expected
 
 = 1.0 =
 * initial release
