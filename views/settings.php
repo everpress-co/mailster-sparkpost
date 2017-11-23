@@ -28,7 +28,7 @@
 	<tr valign="top">
 		<th scope="row"><?php esc_html_e( 'Sending Domain' , 'mailster-sparkpost' ) ?></th>
 		<td>
-		<?php $domains = $this->get_sending_domains(); ?>
+		<?php $domains = $verified ? $this->get_sending_domains() : array(); ?>
 		<?php if ( is_wp_error( $domains ) ) : ?>
 			<div class="error inline"><p><strong><?php esc_html_e( 'Not able to get Sending domains. Make sure your API Key is allowed to read them!' , 'mailster-sparkpost' ) ?></strong></p></div>
 		<?php else : ?>
@@ -44,7 +44,7 @@
 	<tr valign="top">
 		<th scope="row"><?php esc_html_e( 'Sub Accounts' , 'mailster-sparkpost' ) ?></th>
 		<td>
-		<?php $accounts = $this->get_subaccounts(); ?>
+		<?php $accounts = $verified ? $this->get_subaccounts() : array(); ?>
 		<?php if ( is_wp_error( $accounts ) ) : ?>
 			<div class="error inline"><p><strong><?php esc_html_e( 'Not able to get Sub Accounts. Make sure your API Key is allowed to read them! Mailster will use your Master Account.' , 'mailster-sparkpost' ) ?></strong></p></div>
 		<?php else : ?>

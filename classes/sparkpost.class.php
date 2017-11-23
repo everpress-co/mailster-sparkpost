@@ -157,7 +157,7 @@ class MailsterSparkPost {
 					'name' => $mailobject->from_name,
 					'email' => $mailobject->from,
 				),
-				'subject' => $mailobject->subject,
+				'subject' => $mailobject->subject ? $mailobject->subject : '[' . __( 'no subject', 'mailster-sparkpost' ) . ']',
 				'reply_to' => $mailobject->reply_to,
 				'text' => $mailobject->mailer->AltBody,
 				'html' => $mailobject->mailer->Body,
@@ -174,7 +174,7 @@ class MailsterSparkPost {
 					if ( 'inline' != $attachment[6] ) {
 						continue;
 					}
-					$inline_images[] = array(
+					$inline_images[ $attachment[7] ] = array(
 						'type' => $attachment[4],
 						'name' => $attachment[7],
 						'data' => base64_encode( file_get_contents( $attachment[0] ) ),
@@ -182,7 +182,7 @@ class MailsterSparkPost {
 				}
 
 				if ( ! empty( $inline_images ) ) {
-					$mailobject->sparkpost_object['content']['inline_images'] = $inline_images;
+					$mailobject->sparkpost_object['content']['inline_images'] = array_values( $inline_images );
 				}
 			}
 
@@ -658,7 +658,7 @@ class MailsterSparkPost {
 		if ( function_exists( 'mailster' ) ) {
 			if ( mailster_option( 'deliverymethod' ) == 'sparkpost' ) {
 				mailster_update_option( 'deliverymethod', 'simple' );
-				mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', false, 'delivery_method' );
+				mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', 3600, 'delivery_method' );
 			}
 		}
 	}
