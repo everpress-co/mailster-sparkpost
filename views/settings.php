@@ -89,6 +89,11 @@
 		</select> <span class="description"><?php esc_html_e( 'Track opens and clicks in SparkPost as well', 'mailster-sparkpost' ); ?></span></td>
 	</tr>
 	<tr valign="top">
+		<th scope="row"><?php esc_html_e( 'IP Pool' , 'mailster-sparkpost' ) ?></th>
+		<td><input type="text" name="mailster_options[sparkpost_ip_pool]" value="<?php echo esc_attr( mailster_option( 'sparkpost_ip_pool' ) ); ?>" class="regular-text">
+		<p class="howto"><?php esc_html_e( 'The ID of a dedicated IP pool associated with your account. If this field is not provided, the account’s default dedicated IP pool is used' , 'mailster-sparkpost' ) ?></p>
+	</tr>
+	<tr valign="top">
 		<th scope="row"><?php esc_html_e( 'Tags' , 'mailster-sparkpost' ) ?></th>
 		<td><input type="text" name="mailster_options[sparkpost_tags]" value="<?php echo esc_attr( mailster_option( 'sparkpost_tags' ) ); ?>" class="large-text">
 		<p class="howto"><?php esc_html_e( 'Define your tags separated with commas which get send via the SparkPost API' , 'mailster-sparkpost' ) ?></p>

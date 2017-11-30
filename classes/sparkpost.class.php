@@ -135,6 +135,10 @@ class MailsterSparkPost {
 			$mailobject->sparkpost_object['tags'] = array_map( 'trim', explode( ',', $tags ) );
 		}
 
+		if ( $ip_pool = mailster_option( 'sparkpost_ip_pool' ) ) {
+			$mailobject->sparkpost_object['options']['ip_pool'] = $ip_pool;
+		}
+
 		if ( $method == 'smtp' ) {
 
 		} elseif ( $method == 'web' ) {
