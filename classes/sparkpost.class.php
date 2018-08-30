@@ -320,7 +320,11 @@ class MailsterSparkPost {
 	 */
 	private function do_call( $method, $endpoint, $args = array(), $timeout = 15 ) {
 
-		$url = 'https://api.sparkpost.com/api/v1/' . $endpoint;
+		if ( 'eu' == mailster_option( 'sparkpost_endpoint' ) ) {
+			$url = 'https://api.eu.sparkpost.com/api/v1/' . $endpoint;
+		} else {
+			$url = 'https://api.sparkpost.com/api/v1/' . $endpoint;
+		}
 
 		$args = wp_parse_args( $args, array() );
 		$body = null;

@@ -58,6 +58,15 @@
 		</td>
 	</tr>
 	<tr valign="top">
+		<th scope="row"><?php esc_html_e( 'Endpoint' , 'mailster-sparkpost' ) ?></th>
+		<td>
+		<select name="mailster_options[sparkpost_endpoint]">
+			<option value="0" <?php selected( mailster_option( 'sparkpost_endpoint' ), 'default' )?>><?php esc_html_e( 'Default', 'mailster-sparkpost' ); ?></option>
+			<option value="eu" <?php selected( mailster_option( 'sparkpost_endpoint' ), 'eu' )?>><?php esc_html_e( 'EU', 'mailster-sparkpost' ); ?></option>
+		</select>
+		</td>
+	</tr>
+	<tr valign="top">
 		<th scope="row"><?php esc_html_e( 'Send Emails with' , 'mailster-sparkpost' ) ?></th>
 		<td>
 		<select name="mailster_options[sparkpost_api]">
