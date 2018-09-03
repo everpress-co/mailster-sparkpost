@@ -22,7 +22,15 @@
 			<input type="hidden" name="mailster_options[sparkpost_verified]" value="<?php echo $verified ?>">
 		</td>
 	</tr>
-</table>
+	<tr valign="top">
+		<th scope="row"><?php esc_html_e( 'Endpoint' , 'mailster-sparkpost' ) ?></th>
+		<td>
+		<select name="mailster_options[sparkpost_endpoint]">
+			<option value="0" <?php selected( mailster_option( 'sparkpost_endpoint' ), 'default' )?>><?php esc_html_e( 'Default', 'mailster-sparkpost' ); ?></option>
+			<option value="eu" <?php selected( mailster_option( 'sparkpost_endpoint' ), 'eu' )?>><?php esc_html_e( 'EU', 'mailster-sparkpost' ); ?></option>
+		</select>
+		</td>
+	</tr></table>
 <div class="<?php echo ( ! $verified ) ? 'hidden' : '' ?>">
 <table class="form-table">
 	<tr valign="top">
@@ -55,15 +63,6 @@
 		<?php endforeach; ?>
 		</select> <a href="https://app.sparkpost.com/account/subaccounts" class="external"><?php esc_html_e( 'Manage your Subaccounts', 'mailster-sparkpost' ); ?></a>
 		<?php endif; ?>
-		</td>
-	</tr>
-	<tr valign="top">
-		<th scope="row"><?php esc_html_e( 'Endpoint' , 'mailster-sparkpost' ) ?></th>
-		<td>
-		<select name="mailster_options[sparkpost_endpoint]">
-			<option value="0" <?php selected( mailster_option( 'sparkpost_endpoint' ), 'default' )?>><?php esc_html_e( 'Default', 'mailster-sparkpost' ); ?></option>
-			<option value="eu" <?php selected( mailster_option( 'sparkpost_endpoint' ), 'eu' )?>><?php esc_html_e( 'EU', 'mailster-sparkpost' ); ?></option>
-		</select>
 		</td>
 	</tr>
 	<tr valign="top">
