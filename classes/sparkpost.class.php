@@ -155,6 +155,8 @@ class MailsterSparkPost {
 
 			}
 
+			$reply_to = is_array( $mailobject->reply_to ) ? reset( $mailobject->reply_to ) : $mailobject->reply_to;
+
 			$mailobject->sparkpost_object['recipients'] = $recipients;
 			$mailobject->sparkpost_object['content'] = array(
 				'from' => array(
@@ -162,7 +164,7 @@ class MailsterSparkPost {
 					'email' => $mailobject->from,
 				),
 				'subject' => $mailobject->subject ? $mailobject->subject : '[' . __( 'no subject', 'mailster-sparkpost' ) . ']',
-				'reply_to' => $mailobject->reply_to,
+				'reply_to' => $reply_to,
 				'text' => $mailobject->mailer->AltBody,
 				'html' => $mailobject->mailer->Body,
 				'headers' => $mailobject->headers,

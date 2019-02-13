@@ -3,7 +3,7 @@
 Plugin Name: Mailster SparkPost Integration
 Plugin URI: https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+SparkPost+Integration
 Description: Uses SparkPost to deliver emails for the Mailster Newsletter Plugin for WordPress.
-Version: 1.4.1
+Version: 1.4.2
 Author: EverPress
 Author URI: https://mailster.co
 Text Domain: mailster-sparkpost
@@ -11,7 +11,7 @@ License: GPLv2 or later
 */
 
 
-define( 'MAILSTER_SPARKPOST_VERSION', '1.4.1' );
+define( 'MAILSTER_SPARKPOST_VERSION', '1.4.2' );
 define( 'MAILSTER_SPARKPOST_REQUIRED_VERSION', '2.2.9' );
 define( 'MAILSTER_SPARKPOST_FILE', __FILE__ );
 

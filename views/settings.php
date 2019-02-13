@@ -31,6 +31,7 @@
 		</select>
 		</td>
 	</tr></table>
+<?php if ( 'sparkpost' == mailster_option( 'deliverymethod' ) ) : ?>
 <div class="<?php echo ( ! $verified ) ? 'hidden' : '' ?>">
 <table class="form-table">
 	<tr valign="top">
@@ -108,4 +109,20 @@
 	</tr>
 </table>
 </div>
+<?php else : ?>
+<input type="hidden" name="mailster_options[sparkpost_subaccount]" value="<?php echo esc_attr( mailster_option( 'sparkpost_subaccount' ) ) ?>">
+<input type="hidden" name="mailster_options[sparkpost_api]" value="<?php echo esc_attr( mailster_option( 'sparkpost_api' ) ) ?>">
+<input type="hidden" name="mailster_options[sparkpost_port]" value="<?php echo esc_attr( mailster_option( 'sparkpost_port' ) ) ?>">
+<input type="hidden" name="mailster_options[sparkpost_track]" value="<?php echo esc_attr( mailster_option( 'sparkpost_track' ) ) ?>">
+<input type="hidden" name="mailster_options[sparkpost_ip_pool]" value="<?php echo esc_attr( mailster_option( 'sparkpost_ip_pool' ) ) ?>">
+<input type="hidden" name="mailster_options[sparkpost_tags]" value="<?php echo esc_attr( mailster_option( 'sparkpost_tags' ) ) ?>">
+	<?php if ( $verified ) : ?>
+	<table class="form-table">
+		<tr valign="top">
+			<th scope="row">&nbsp;</th>
+			<td><div class="notice notice-warning inline"><p><strong><?php esc_html_e( 'Please save your settings to access further delivery options!', 'mailster-sparkpost' ); ?></strong></p></div></td>
+		</tr>
+	</table>
+	<?php endif; ?>
 
+<?php endif; ?>

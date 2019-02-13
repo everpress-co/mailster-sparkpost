@@ -1,9 +1,9 @@
 === Mailster SparkPost Integration ===
-Contributors: everpress, revaxarts
+Contributors: everpress
 Tags: sparkpost, mailster, deliverymethod, newsletter, mailsteresp, email
 Requires at least: 3.8
 Tested up to: 4.9
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 Author: EverPress
 Author URI: https://mailster.co
@@ -29,6 +29,10 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 1. Option Interface.
 
 == Changelog ==
+
+= 1.4.2 =
+
+* fixed: issue with Mailster 2.3.16+ and reply_to headers
 
 = 1.4.1 =
 
