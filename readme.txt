@@ -2,8 +2,8 @@
 Contributors: everpress
 Tags: sparkpost, mailster, deliverymethod, newsletter, mailsteresp, email
 Requires at least: 3.8
-Tested up to: 4.9
-Stable tag: 1.4.2
+Tested up to: 5.2
+Stable tag: 1.5
 License: GPLv2 or later
 Author: EverPress
 Author URI: https://mailster.co
@@ -29,6 +29,10 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 1. Option Interface.
 
 == Changelog ==
+
+= 1.5 =
+
+* updated: applied SparkPost API endpoint changes
 
 = 1.4.2 =
 

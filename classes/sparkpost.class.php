@@ -513,20 +513,26 @@ class MailsterSparkPost {
 			$last_bounce_check = $now;
 		}
 
-		// SparkPost has some delay when adding bounces so we have to get messages from an earlier time (120 seconds)
-		$sparkpost_offset = 120;
+		// SparkPost has some delay when adding bounces so we have to get messages from an earlier time
+		$sparkpost_offset = MINUTE_IN_SECONDS;
 
-		$response = $this->do_get( 'message-events', array(
+		$args = array(
 			'from' => date( 'Y-m-d\TH:i', $last_bounce_check - $sparkpost_offset ),
 			'to' => date( 'Y-m-d\TH:i', $last_bounce_check + $sparkpost_offset ),
 			'events' => 'bounce,delay,policy_rejection,generation_failure,generation_rejection,spam_complaint,list_unsubscribe,link_unsubscribe,out_of_band',
-		), 30);
+		);
+
+		$response = $this->do_get( 'events/message', $args, 30 );
 
 		if ( is_wp_error( $response ) ) {
 			mailster_notice( sprintf( __( 'Not able to check bounces via SparkPost: %s', 'mailster-sparkpost' ), $response->get_error_message() ) , 'error', false, 'mailster_sparkpost_bounce_error' );
 			return;
 		} else {
 			mailster_remove_notice( 'mailster_sparkpost_bounce_error' );
+		}
+
+		if ( $response->total_count ) {
+			error_log( print_r( $response, true ) );
 		}
 
 		$MID = mailster_option( 'ID' );
@@ -562,7 +568,7 @@ class MailsterSparkPost {
 				case 'generation_failure':
 				case 'generation_rejection':
 				case 'policy_rejection':
-					mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $result->reason );
+					mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $result->raw_reason );
 					break;
 				case 'list_unsubscribe':
 				case 'link_unsubscribe':
