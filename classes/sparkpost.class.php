@@ -11,7 +11,7 @@ class MailsterSparkPost {
 	public function __construct() {
 
 		$this->plugin_path = plugin_dir_path( MAILSTER_SPARKPOST_FILE );
-		$this->plugin_url = plugin_dir_url( MAILSTER_SPARKPOST_FILE );
+		$this->plugin_url  = plugin_dir_url( MAILSTER_SPARKPOST_FILE );
 
 		register_activation_hook( MAILSTER_SPARKPOST_FILE, array( &$this, 'activate' ) );
 		register_deactivation_hook( MAILSTER_SPARKPOST_FILE, array( &$this, 'deactivate' ) );
@@ -75,13 +75,13 @@ class MailsterSparkPost {
 				$username .= ':X-MSYS-SUBACCOUNT=' . $subaccount;
 			}
 
-			$mailobject->mailer->Mailer = 'smtp';
-			$mailobject->mailer->SMTPSecure = 'tls';
-			$mailobject->mailer->Host = 'smtp.sparkpostmail.com';
-			$mailobject->mailer->Port = mailster_option( 'sparkpost_port' );
-			$mailobject->mailer->SMTPAuth = 'LOGIN';
-			$mailobject->mailer->Username = $username;
-			$mailobject->mailer->Password = mailster_option( 'sparkpost_apikey' );
+			$mailobject->mailer->Mailer        = 'smtp';
+			$mailobject->mailer->SMTPSecure    = 'tls';
+			$mailobject->mailer->Host          = 'smtp.sparkpostmail.com';
+			$mailobject->mailer->Port          = mailster_option( 'sparkpost_port' );
+			$mailobject->mailer->SMTPAuth      = 'LOGIN';
+			$mailobject->mailer->Username      = $username;
+			$mailobject->mailer->Password      = mailster_option( 'sparkpost_apikey' );
 			$mailobject->mailer->SMTPKeepAlive = true;
 
 		} elseif ( $method == 'web' ) {
@@ -110,24 +110,24 @@ class MailsterSparkPost {
 		$mailobject->pre_send();
 
 		$mailobject->sparkpost_object = array(
-			'options' => array(
+			'options'     => array(
 				'transactional' => ! empty( $mailobject->campaignID ),
-				'ip_pool' => 'sp_shared',
-				'inline_css' => false,
+				'ip_pool'       => 'sp_shared',
+				'inline_css'    => false,
 			),
-			'metadata' => array(
-				'mailster_id' => mailster_option( 'ID' ),
-				'campaign_id' => $mailobject->campaignID,
+			'metadata'    => array(
+				'mailster_id'   => mailster_option( 'ID' ),
+				'campaign_id'   => $mailobject->campaignID,
 				'subscriber_id' => $mailobject->subscriberID,
-				'message_id' => $mailobject->messageID,
+				'message_id'    => $mailobject->messageID,
 			),
 			'campaign_id' => $mailobject->campaignID ? substr( '#' . $mailobject->campaignID . ' ' . esc_attr( get_the_title( $mailobject->campaignID ) ), 0, 64 ) : null,
 		);
 
 		if ( $tracking_options = mailster_option( 'sparkpost_track' ) ) {
-			$open_tracking = 'opens' == $tracking_options || 'opens,clicks' == $tracking_options;
+			$open_tracking  = 'opens' == $tracking_options || 'opens,clicks' == $tracking_options;
 			$click_tracking = 'clicks' == $tracking_options || 'opens,clicks' == $tracking_options;
-			$mailobject->sparkpost_object['options']['open_tracking'] = $open_tracking;
+			$mailobject->sparkpost_object['options']['open_tracking']  = $open_tracking;
 			$mailobject->sparkpost_object['options']['click_tracking'] = $click_tracking;
 		}
 
@@ -147,33 +147,33 @@ class MailsterSparkPost {
 
 			foreach ( $mailobject->to as $i => $to ) {
 				$recipients[] = array(
-						'address' => array(
-							'name' => $mailobject->to_name[ $i ] ? $mailobject->to_name[ $i ] : null,
-							'email' => $mailobject->to[ $i ] ? $mailobject->to[ $i ] : null,
-						),
-					);
+					'address' => array(
+						'name'  => $mailobject->to_name[ $i ] ? $mailobject->to_name[ $i ] : null,
+						'email' => $mailobject->to[ $i ] ? $mailobject->to[ $i ] : null,
+					),
+				);
 
 			}
 
 			$reply_to = is_array( $mailobject->reply_to ) ? reset( $mailobject->reply_to ) : $mailobject->reply_to;
 
 			$mailobject->sparkpost_object['recipients'] = $recipients;
-			$mailobject->sparkpost_object['content'] = array(
-				'from' => array(
-					'name' => $mailobject->from_name,
+			$mailobject->sparkpost_object['content']    = array(
+				'from'     => array(
+					'name'  => $mailobject->from_name,
 					'email' => $mailobject->from,
 				),
-				'subject' => $mailobject->subject ? $mailobject->subject : '[' . __( 'no subject', 'mailster-sparkpost' ) . ']',
+				'subject'  => $mailobject->subject ? $mailobject->subject : '[' . __( 'no subject', 'mailster-sparkpost' ) . ']',
 				'reply_to' => $reply_to,
-				'text' => $mailobject->mailer->AltBody,
-				'html' => $mailobject->mailer->Body,
-				'headers' => $mailobject->headers,
+				'text'     => $mailobject->mailer->AltBody,
+				'html'     => $mailobject->mailer->Body,
+				'headers'  => $mailobject->headers,
 			);
 
 			if ( $mailobject->embed_images ) {
 
 				$org_attachments = $mailobject->mailer->getAttachments();
-				$inline_images = array();
+				$inline_images   = array();
 
 				foreach ( $org_attachments as $attachment ) {
 
@@ -195,7 +195,7 @@ class MailsterSparkPost {
 			if ( ! empty( $mailobject->attachments ) ) {
 
 				$org_attachments = $mailobject->mailer->getAttachments();
-				$attachments = array();
+				$attachments     = array();
 
 				foreach ( $org_attachments as $attachment ) {
 
@@ -328,9 +328,9 @@ class MailsterSparkPost {
 			$url = 'https://api.sparkpost.com/api/v1/' . $endpoint;
 		}
 
-		$args = wp_parse_args( $args, array() );
-		$body = null;
-		$apikey = isset( $this->apikey ) ? $this->apikey : mailster_option( 'sparkpost_apikey' );
+		$args       = wp_parse_args( $args, array() );
+		$body       = null;
+		$apikey     = isset( $this->apikey ) ? $this->apikey : mailster_option( 'sparkpost_apikey' );
 		$subaccount = isset( $this->subaccount ) ? $this->subaccount : mailster_option( 'sparkpost_subaccount', 0 );
 
 		if ( 'GET' == $method ) {
@@ -342,17 +342,20 @@ class MailsterSparkPost {
 		}
 
 		$headers = array(
-			'Authorization' => $apikey,
-			'Accept' => 'application/json',
+			'Authorization'     => $apikey,
+			'Accept'            => 'application/json',
 			'X-MSYS-SUBACCOUNT' => $subaccount,
 		);
 
-		$response = wp_remote_request( $url, array(
-			'method' => $method,
-			'headers' => $headers,
-			'timeout' => $timeout,
-			'body' => $body,
-		) );
+		$response = wp_remote_request(
+			$url,
+			array(
+				'method'  => $method,
+				'headers' => $headers,
+				'timeout' => $timeout,
+				'body'    => $body,
+			)
+		);
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -447,7 +450,7 @@ class MailsterSparkPost {
 
 		if ( $options['deliverymethod'] == 'sparkpost' ) {
 
-			$old_apikey = mailster_option( 'sparkpost_apikey' );
+			$old_apikey          = mailster_option( 'sparkpost_apikey' );
 			$old_delivery_method = mailster_option( 'deliverymethod' );
 
 			if ( $old_apikey != $options['sparkpost_apikey'] || ! $options['sparkpost_verified'] || $old_delivery_method != 'sparkpost' ) {
@@ -508,7 +511,7 @@ class MailsterSparkPost {
 		// round as the SparkPost API only accepts minutes values
 		$now = floor( time() / 60 ) * 60;
 
-		if ( ! ($last_bounce_check = get_transient( '_mailster_sparkpost_last_bounce_check' )) ) {
+		if ( ! ( $last_bounce_check = get_transient( '_mailster_sparkpost_last_bounce_check' ) ) ) {
 			set_transient( '_mailster_sparkpost_last_bounce_check', $now );
 			$last_bounce_check = $now;
 		}
@@ -517,15 +520,15 @@ class MailsterSparkPost {
 		$sparkpost_offset = MINUTE_IN_SECONDS;
 
 		$args = array(
-			'from' => date( 'Y-m-d\TH:i', $last_bounce_check - $sparkpost_offset ),
-			'to' => date( 'Y-m-d\TH:i', $last_bounce_check + $sparkpost_offset ),
+			'from'   => date( 'Y-m-d\TH:i', $last_bounce_check - $sparkpost_offset ),
+			'to'     => date( 'Y-m-d\TH:i', $last_bounce_check + $sparkpost_offset ),
 			'events' => 'bounce,delay,policy_rejection,generation_failure,generation_rejection,spam_complaint,list_unsubscribe,link_unsubscribe,out_of_band',
 		);
 
 		$response = $this->do_get( 'events/message', $args, 30 );
 
 		if ( is_wp_error( $response ) ) {
-			mailster_notice( sprintf( __( 'Not able to check bounces via SparkPost: %s', 'mailster-sparkpost' ), $response->get_error_message() ) , 'error', false, 'mailster_sparkpost_bounce_error' );
+			mailster_notice( sprintf( __( 'Not able to check bounces via SparkPost: %s', 'mailster-sparkpost' ), $response->get_error_message() ), 'error', false, 'mailster_sparkpost_bounce_error' );
 			return;
 		} else {
 			mailster_remove_notice( 'mailster_sparkpost_bounce_error' );
@@ -604,10 +607,10 @@ class MailsterSparkPost {
 	 */
 	public function section_tab_bounce() {
 
-?>
+		?>
 		<div class="error inline"><p><strong><?php _e( 'Bouncing is handled by SparkPost so all your settings will be ignored', 'mailster-sparkpost' ); ?></strong></p></div>
 
-	<?php
+		<?php
 	}
 
 
@@ -619,13 +622,13 @@ class MailsterSparkPost {
 	 * @return void
 	 */
 	public function notice() {
-?>
+		?>
 	<div id="message" class="error">
 	  <p>
-	   <strong>SparkPost integration for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=SparkPost+integration+for+Mailster">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_SPARKPOST_REQUIRED_VERSION ?></strong>.
+	   <strong>SparkPost integration for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=SparkPost+integration+for+Mailster">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_SPARKPOST_REQUIRED_VERSION; ?></strong>.
 	  </p>
 	</div>
-	<?php
+		<?php
 	}
 
 
@@ -643,13 +646,13 @@ class MailsterSparkPost {
 			mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', false, 'delivery_method' );
 
 			$defaults = array(
-				'sparkpost_apikey' => null,
+				'sparkpost_apikey'     => null,
 				'sparkpost_subaccount' => null,
-				'sparkpost_api' => 'web',
-				'sparkpost_port' => 587,
-				'sparkpost_track' => 0,
-				'sparkpost_tags' => '',
-				'sparkpost_verified' => false,
+				'sparkpost_api'        => 'web',
+				'sparkpost_port'       => 587,
+				'sparkpost_track'      => 0,
+				'sparkpost_tags'       => '',
+				'sparkpost_verified'   => false,
 			);
 
 			$mailster_options = mailster_options();
