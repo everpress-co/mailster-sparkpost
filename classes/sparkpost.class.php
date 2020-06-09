@@ -75,9 +75,14 @@ class MailsterSparkPost {
 				$username .= ':X-MSYS-SUBACCOUNT=' . $subaccount;
 			}
 
+			if ( 'eu' == mailster_option( 'sparkpost_endpoint' ) ) {
+				$mailobject->mailer->Host = 'smtp.eu.sparkpostmail.com';
+			} else {
+				$mailobject->mailer->Host = 'smtp.sparkpostmail.com';
+			}
+
 			$mailobject->mailer->Mailer        = 'smtp';
 			$mailobject->mailer->SMTPSecure    = 'tls';
-			$mailobject->mailer->Host          = 'smtp.sparkpostmail.com';
 			$mailobject->mailer->Port          = mailster_option( 'sparkpost_port' );
 			$mailobject->mailer->SMTPAuth      = 'LOGIN';
 			$mailobject->mailer->Username      = $username;
