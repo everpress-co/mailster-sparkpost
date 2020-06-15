@@ -347,10 +347,13 @@ class MailsterSparkPost {
 		}
 
 		$headers = array(
-			'Authorization'     => $apikey,
-			'Accept'            => 'application/json',
-			'X-MSYS-SUBACCOUNT' => $subaccount,
+			'Authorization' => $apikey,
+			'Accept'        => 'application/json',
 		);
+
+		if ( $subaccount && 'subaccounts' != $endpoint ) {
+			$headers['X-MSYS-SUBACCOUNT'] = $subaccount;
+		}
 
 		$response = wp_remote_request(
 			$url,
@@ -371,7 +374,12 @@ class MailsterSparkPost {
 
 		if ( 200 != $code ) {
 
-			return new WP_Error( $code, $body->errors[0]->message );
+			$errormessage = $body->errors[0]->message;
+			if ( isset( $body->errors[0]->description ) ) {
+				$errormessage .= ' ' . $body->errors[0]->description;
+			}
+
+			return new WP_Error( $code, $errormessage );
 
 		}
 
