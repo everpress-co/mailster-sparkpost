@@ -547,10 +547,6 @@ class MailsterSparkPost {
 			mailster_remove_notice( 'mailster_sparkpost_bounce_error' );
 		}
 
-		if ( $response->total_count ) {
-			error_log( print_r( $response, true ) );
-		}
-
 		$MID = mailster_option( 'ID' );
 
 		foreach ( $response->results as $result ) {
