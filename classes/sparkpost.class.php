@@ -162,6 +162,10 @@ class MailsterSparkPost {
 
 			$reply_to = is_array( $mailobject->reply_to ) ? reset( $mailobject->reply_to ) : $mailobject->reply_to;
 
+			if ( isset( $mailobject->headers['X-Mailster-Campaign'] ) ) {
+				$mailobject->headers['X-Mailster-Campaign'] = (string) $mailobject->headers['X-Mailster-Campaign'];
+			}
+
 			$mailobject->sparkpost_object['recipients'] = $recipients;
 			$mailobject->sparkpost_object['content']    = array(
 				'from'     => array(
