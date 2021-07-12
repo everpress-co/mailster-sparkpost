@@ -129,7 +129,11 @@ class MailsterSparkPost {
 			'campaign_id' => $mailobject->campaignID ? substr( '#' . $mailobject->campaignID . ' ' . esc_attr( get_the_title( $mailobject->campaignID ) ), 0, 64 ) : null,
 		);
 
-		if ( $tracking_options = mailster_option( 'sparkpost_track' ) ) {
+		// do not track in test campaigns
+		if ( '00000000000000000000000000000000' == $mailobject->hash ) {
+			$mailobject->sparkpost_object['options']['open_tracking']  = false;
+			$mailobject->sparkpost_object['options']['click_tracking'] = false;
+		} elseif ( $tracking_options = mailster_option( 'sparkpost_track' ) ) {
 			$open_tracking  = 'opens' == $tracking_options || 'opens,clicks' == $tracking_options;
 			$click_tracking = 'clicks' == $tracking_options || 'opens,clicks' == $tracking_options;
 			$mailobject->sparkpost_object['options']['open_tracking']  = $open_tracking;
@@ -656,7 +660,7 @@ class MailsterSparkPost {
 
 		if ( function_exists( 'mailster' ) ) {
 
-			mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', false, 'delivery_method' );
+			mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', 360, 'delivery_method' );
 
 			$defaults = array(
 				'sparkpost_apikey'     => null,
@@ -690,7 +694,7 @@ class MailsterSparkPost {
 		if ( function_exists( 'mailster' ) ) {
 			if ( mailster_option( 'deliverymethod' ) == 'sparkpost' ) {
 				mailster_update_option( 'deliverymethod', 'simple' );
-				mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', 3600, 'delivery_method' );
+				mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-sparkpost' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">Settings Page</a>' ), '', 360, 'delivery_method' );
 			}
 		}
 	}
