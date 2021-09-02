@@ -123,6 +123,7 @@ class MailsterSparkPost {
 			'metadata'    => array(
 				'mailster_id'   => mailster_option( 'ID' ),
 				'campaign_id'   => $mailobject->campaignID,
+				'index'         => $mailobject->index,
 				'subscriber_id' => $mailobject->subscriberID,
 				'message_id'    => $mailobject->messageID,
 			),
@@ -578,6 +579,11 @@ class MailsterSparkPost {
 			} else {
 				$campaign_id = null;
 			}
+			if ( isset( $result->rcpt_meta->index ) ) {
+				$campaign_index = $result->rcpt_meta->index;
+			} else {
+				$campaign_index = null;
+			}
 
 			$is_hard_bounce = true;
 
@@ -588,12 +594,20 @@ class MailsterSparkPost {
 				case 'generation_failure':
 				case 'generation_rejection':
 				case 'policy_rejection':
-					mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $result->raw_reason );
+					if ( version_compare( MAILSTER_VERSION, '3.0', '<' ) ) {
+						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $status );
+					} else {
+						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $status, $campaign_index );
+					}
 					break;
 				case 'list_unsubscribe':
 				case 'link_unsubscribe':
 				case 'spam_complaint':
-					mailster( 'subscribers' )->unsubscribe( $subscriber->ID, $campaign_id, $result->type );
+					if ( version_compare( MAILSTER_VERSION, '3.0', '<' ) ) {
+						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, true, $result->type );
+					} else {
+						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, true, $result->type, $campaign_index );
+					}
 					break;
 				case 'delay':
 					// soft bounces are handled by SparkPost
