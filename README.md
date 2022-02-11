@@ -23,7 +23,10 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 
 ## Screenshots
 
-1. Option Interface.
+### 1. Option Interface.
+
+![Option Interface.](https://ps.w.org/mailster-sparkpost/assets/screenshot-1.png)
+
 
 ## Changelog
 
