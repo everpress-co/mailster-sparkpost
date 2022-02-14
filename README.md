@@ -1,6 +1,6 @@
 # Mailster SparkPost Integration
 
-Contributors: everpress  
+Contributors: everpress, xaverb  
 Tags: sparkpost, mailster, deliverymethod, newsletter, mailsteresp, email
 Requires at least: 3.8  
 Tested up to: 5.9  
@@ -26,7 +26,6 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 ### 1. Option Interface.
 
 ![Option Interface.](https://ps.w.org/mailster-sparkpost/assets/screenshot-1.png)
-
 
 ## Changelog
 
