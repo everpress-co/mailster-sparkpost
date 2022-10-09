@@ -656,7 +656,7 @@ class MailsterSparkPost {
 		?>
 	<div id="message" class="error">
 	  <p>
-	   <strong>SparkPost integration for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=SparkPost+integration+for+Mailster&utm_medium=plugin">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_SPARKPOST_REQUIRED_VERSION; ?></strong>.
+	   <strong>SparkPost integration for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=SparkPost">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_SPARKPOST_REQUIRED_VERSION; ?></strong>.
 	  </p>
 	</div>
 		<?php

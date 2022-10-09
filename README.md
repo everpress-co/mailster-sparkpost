@@ -9,9 +9,9 @@ License: GPLv2 or later
 
 ## Description
 
-Uses SparkPost to deliver emails for the [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=SparkPost+integration+for+Mailster&utm_medium=readme).
+Uses SparkPost to deliver emails for the [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=SparkPost).
 
-Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpost/?utm_campaign=wporg&utm_source=SparkPost+integration+for+Mailster&utm_medium=readme) to get started.
+Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpost/?utm_campaign=wporg&utm_source=SparkPost&utm_medium=readme) to get started.
 
 ## Installation
 
@@ -80,4 +80,4 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 
 ## Additional Info
 
-This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=SparkPost+integration+for+Mailster&utm_medium=readme)
+This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=SparkPost)
