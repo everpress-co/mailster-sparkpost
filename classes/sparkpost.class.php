@@ -4,6 +4,8 @@ class MailsterSparkPost {
 
 	private $plugin_path;
 	private $plugin_url;
+	private $apikey;
+	private $subaccount;
 
 	/**
 	 *
@@ -51,7 +53,6 @@ class MailsterSparkPost {
 				add_filter( 'mailster_subscriber_errors', array( $this, 'subscriber_errors' ) );
 			}
 		}
-
 	}
 
 
@@ -95,7 +96,6 @@ class MailsterSparkPost {
 
 		// SparkPost will handle DKIM integration
 		$mailobject->dkim = false;
-
 	}
 
 
@@ -233,7 +233,6 @@ class MailsterSparkPost {
 		if ( $method == 'smtp' ) {
 			$mailobject->mailer->addCustomHeader( 'X-MSYS-API: ' . json_encode( $mailobject->sparkpost_object ) );
 		}
-
 	}
 
 
@@ -274,14 +273,11 @@ class MailsterSparkPost {
 				}
 				$mailobject->set_error( $errormessage );
 				$mailobject->sent = false;
-			} else {
-				if ( $response->results->total_rejected_recipients ) {
+			} elseif ( $response->results->total_rejected_recipients ) {
 					$mailobject->set_error( sprintf( __( 'SparkPost rejected the following receivers: %s', 'mailster-sparkpost' ), implode( ', ', $mailobject->to ) ) );
 					$mailobject->sent = false;
-				} else {
-					$mailobject->sent = true;
-
-				}
+			} else {
+				$mailobject->sent = true;
 			}
 		}
 	}
@@ -316,7 +312,6 @@ class MailsterSparkPost {
 		$verified = mailster_option( 'sparkpost_verified' );
 
 		include $this->plugin_path . '/views/settings.php';
-
 	}
 
 
@@ -393,7 +388,6 @@ class MailsterSparkPost {
 		}
 
 		return $body;
-
 	}
 
 
@@ -417,7 +411,6 @@ class MailsterSparkPost {
 		}
 
 		return $response;
-
 	}
 
 
@@ -438,7 +431,6 @@ class MailsterSparkPost {
 		$domains = $response->results;
 
 		return $domains;
-
 	}
 
 	/**
@@ -457,7 +449,6 @@ class MailsterSparkPost {
 		$accounts = $response->results;
 
 		return $accounts;
-
 	}
 
 
@@ -655,9 +646,9 @@ class MailsterSparkPost {
 	public function notice() {
 		?>
 	<div id="message" class="error">
-	  <p>
-	   <strong>SparkPost integration for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=SparkPost">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_SPARKPOST_REQUIRED_VERSION; ?></strong>.
-	  </p>
+		<p>
+		<strong>SparkPost integration for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=SparkPost">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_SPARKPOST_REQUIRED_VERSION; ?></strong>.
+		</p>
 	</div>
 		<?php
 	}
@@ -712,6 +703,4 @@ class MailsterSparkPost {
 			}
 		}
 	}
-
-
 }
