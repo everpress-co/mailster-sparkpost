@@ -3,7 +3,7 @@
 Contributors: everpress, mailster, xaverb  
 Tags: sparkpost, mailster, deliverymethod, newsletter, mailsteresp, email
 Requires at least: 6.0  
-Tested up to: 6.5  
+Tested up to: 6.8  
 Stable tag: 1.9.0  
 License: GPLv2 or later
 
