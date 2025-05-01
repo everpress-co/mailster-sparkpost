@@ -28,4 +28,4 @@ jobs:
           file-paths: |
             README.md
           # Create a pull request, or commit directly if disabled (optional, default: true)
-          create-pr: false
+          create-pr: true
