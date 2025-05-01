@@ -4,7 +4,7 @@ Contributors: everpress, mailster, xaverb
 Tags: sparkpost, mailster, deliverymethod, newsletter, mailsteresp, email
 Requires at least: 6.0  
 Tested up to: 6.5  
-Stable tag: 1.8.1  
+Stable tag: 1.9.0  
 License: GPLv2 or later
 
 ## Description
@@ -28,6 +28,10 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 ![Option Interface.](https://ps.w.org/mailster-sparkpost/assets/screenshot-1.png)
 
 ## Changelog
+
+### 1.9.0
+
+- fixed: missing $status argument in bounce checking
 
 ### 1.8.1
 
