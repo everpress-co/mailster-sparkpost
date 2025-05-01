@@ -586,9 +586,9 @@ class MailsterSparkPost {
 				case 'generation_rejection':
 				case 'policy_rejection':
 					if ( version_compare( MAILSTER_VERSION, '3.0', '<' ) ) {
-						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $status );
+						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $result->type );
 					} else {
-						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $status, $campaign_index );
+						mailster( 'subscribers' )->bounce( $subscriber->ID, $campaign_id, $is_hard_bounce, $result->type, $campaign_index );
 					}
 					break;
 				case 'list_unsubscribe':
