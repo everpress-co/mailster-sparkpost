@@ -1,8 +1,32 @@
+<?php
+/**
+ * SparkPost delivery settings fields for the Mailster delivery tab.
+ *
+ * @package Mailster_SparkPost
+ */
+
+?>
 <table class="form-table">
 	<?php if ( ! $verified ) : ?>
 	<tr valign="top">
 		<th scope="row">&nbsp;</th>
-		<td><p class="description"><?php echo sprintf( __( 'You need a %s account to use this service!', 'mailster-sparkpost' ), '<a href="https://www.sparkpost.com/" class="external">SparkPost</a>' ); ?></p>
+		<td><p class="description">
+		<?php
+		echo wp_kses(
+			sprintf(
+				/* translators: %s: SparkPost website link */
+				__( 'You need a %s account to use this service!', 'mailster-sparkpost' ),
+				'<a href="https://www.sparkpost.com/" class="external">SparkPost</a>'
+			),
+			array(
+				'a' => array(
+					'href'  => true,
+					'class' => true,
+				),
+			)
+		);
+		?>
+		</p>
 		</td>
 	</tr>
 	<?php endif; ?>
@@ -19,7 +43,7 @@
 			<span style="color:#D54E21">&#10006;</span> <?php esc_html_e( 'Your API Key is WRONG!', 'mailster-sparkpost' ); ?>
 			<?php endif; ?>
 
-			<input type="hidden" name="mailster_options[sparkpost_verified]" value="<?php echo $verified; ?>">
+			<input type="hidden" name="mailster_options[sparkpost_verified]" value="<?php echo esc_attr( $verified ); ?>">
 		</td>
 	</tr>
 	<tr valign="top">
@@ -31,20 +55,20 @@
 		</select>
 		</td>
 	</tr></table>
-<?php if ( 'sparkpost' == mailster_option( 'deliverymethod' ) ) : ?>
+<?php if ( 'sparkpost' === mailster_option( 'deliverymethod' ) ) : ?>
 <div class="<?php echo ( ! $verified ) ? 'hidden' : ''; ?>">
 <table class="form-table">
 	<tr valign="top">
 		<th scope="row"><?php esc_html_e( 'Sending Domain', 'mailster-sparkpost' ); ?></th>
 		<td>
-		<?php $domains = $verified ? $this->get_sending_domains() : array(); ?>
-		<?php if ( is_wp_error( $domains ) ) : ?>
+		<?php $mailster_sparkpost_domains = $verified ? $this->get_sending_domains() : array(); ?>
+		<?php if ( is_wp_error( $mailster_sparkpost_domains ) ) : ?>
 			<div class="error inline"><p><strong><?php esc_html_e( 'Not able to get Sending domains. Make sure your API Key is allowed to read them!', 'mailster-sparkpost' ); ?></strong></p></div>
 		<?php else : ?>
 		<p class="howto"><?php esc_html_e( 'You can send from following Domains:', 'mailster-sparkpost' ); ?></p>
 			<ul>
-			<?php foreach ( $domains as $domain ) : ?>
-				<li><a href="https://app.sparkpost.com/account/sending-domains/edit?domain=<?php echo esc_attr_e( $domain->domain ); ?>" class="external" title="<?php echo esc_attr_e( 'Edit on SparkPost', 'mailster-sparkpost' ); ?>"><?php echo esc_html( $domain->domain ); ?></a></li>
+			<?php foreach ( $mailster_sparkpost_domains as $mailster_sparkpost_domain ) : ?>
+				<li><a href="https://app.sparkpost.com/account/sending-domains/edit?domain=<?php echo esc_attr( $mailster_sparkpost_domain->domain ); ?>" class="external" title="<?php esc_attr_e( 'Edit on SparkPost', 'mailster-sparkpost' ); ?>"><?php echo esc_html( $mailster_sparkpost_domain->domain ); ?></a></li>
 			<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
@@ -53,14 +77,14 @@
 	<tr valign="top">
 		<th scope="row"><?php esc_html_e( 'Sub Accounts', 'mailster-sparkpost' ); ?></th>
 		<td>
-		<?php $accounts = $verified ? $this->get_subaccounts() : array(); ?>
-		<?php if ( is_wp_error( $accounts ) ) : ?>
+		<?php $mailster_sparkpost_accounts = $verified ? $this->get_subaccounts() : array(); ?>
+		<?php if ( is_wp_error( $mailster_sparkpost_accounts ) ) : ?>
 			<div class="error inline"><p><strong><?php esc_html_e( 'Not able to get Sub Accounts. Make sure your API Key is allowed to read them! Mailster will use your Master Account.', 'mailster-sparkpost' ); ?></strong></p></div>
 		<?php else : ?>
 		<select name="mailster_options[sparkpost_subaccount]">
 			<option value="0" <?php selected( ! mailster_option( 'sparkpost_subaccount' ) ); ?>><?php esc_html_e( 'use Master account', 'mailster-sparkpost' ); ?></option>
-			<?php foreach ( $accounts as $account ) : ?>
-			<option value="<?php echo esc_attr( $account->id ); ?>" <?php selected( mailster_option( 'sparkpost_subaccount' ), $account->id ); ?>><?php echo esc_html( $account->name . ' (' . $account->status . ')' ); ?></option>
+			<?php foreach ( $mailster_sparkpost_accounts as $mailster_sparkpost_account ) : ?>
+			<option value="<?php echo esc_attr( $mailster_sparkpost_account->id ); ?>" <?php selected( mailster_option( 'sparkpost_subaccount' ), $mailster_sparkpost_account->id ); ?>><?php echo esc_html( $mailster_sparkpost_account->name . ' (' . $mailster_sparkpost_account->status . ')' ); ?></option>
 		<?php endforeach; ?>
 		</select> <a href="https://app.sparkpost.com/account/subaccounts" class="external"><?php esc_html_e( 'Manage your Subaccounts', 'mailster-sparkpost' ); ?></a>
 		<?php endif; ?>
