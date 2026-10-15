@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards for Mailster SparkPost">
+<ruleset name="WordPress Coding Standards for Mailster SparkPost Integration">
 	<description>Sniffs for WordPress plugins, with minor modifications for Mailster</description>
 
 	<config name="testVersion" value="7.4-"/>
@@ -41,6 +41,7 @@
 
 	<arg value="ps"/>
 	<arg name="extensions" value="php,css,scss/css"/>
+	<!-- Never add <arg name="parallel" …/> — hangs / times out on many machines. -->
 
 	<!-- Rules: WordPress Coding Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
