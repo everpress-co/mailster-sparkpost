@@ -3,7 +3,7 @@
 Contributors: everpress, mailster, xaverb  
 Tags: sparkpost, mailster, newsletter, email, mailsteresp  
 Requires at least: 6.0  
-Tested up to: 6.8  
+Tested up to: 7.1  
 Stable tag: 1.9.0  
 License: GPLv2 or later
 
@@ -88,8 +88,6 @@ For Mailster and this addon, see [mailster.co](https://mailster.co/?utm_campaign
 ![Option Interface.](https://ps.w.org/mailster-sparkpost/assets/screenshot-1.png)
 
 ## Changelog
-
-### Unreleased
 
 ### 1.9.0
 
