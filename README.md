@@ -29,6 +29,8 @@ Read the [Setup Guide](https://kb.mailster.co/send-your-newsletters-via-sparkpos
 
 ## Changelog
 
+### Unreleased
+
 ### 1.9.0
 
 - fixed: missing $status argument in bounce checking
