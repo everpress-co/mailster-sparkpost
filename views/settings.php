@@ -1,3 +1,11 @@
+<?php
+/**
+ * SparkPost delivery settings fields for the Mailster delivery tab.
+ *
+ * @package Mailster_SparkPost
+ */
+
+?>
 <table class="form-table">
 	<?php if ( ! $verified ) : ?>
 	<tr valign="top">

@@ -1,14 +1,57 @@
 <?php
+/**
+ * SparkPost delivery integration for Mailster.
+ *
+ * @package Mailster_SparkPost
+ */
 
+/**
+ * Registers SparkPost as a Mailster delivery method and handles send/bounce flows.
+ *
+ * @since 1.0
+ */
 class MailsterSparkPost {
 
+	/**
+	 * Absolute filesystem path to the plugin directory.
+	 *
+	 * @since 1.0
+	 *
+	 * @var string
+	 */
 	private $plugin_path;
+
+	/**
+	 * URL to the plugin directory.
+	 *
+	 * @since 1.0
+	 *
+	 * @var string
+	 */
 	private $plugin_url;
+
+	/**
+	 * Temporary API key override used during verification.
+	 *
+	 * @since 1.0
+	 *
+	 * @var string|null
+	 */
 	private $apikey;
+
+	/**
+	 * Temporary subaccount ID override used during verification.
+	 *
+	 * @since 1.0
+	 *
+	 * @var int|string|null
+	 */
 	private $subaccount;
 
 	/**
+	 * Hooks activation, loads translations, and registers the init callback.
 	 *
+	 * @since 1.0
 	 */
 	public function __construct() {
 
@@ -24,10 +67,11 @@ class MailsterSparkPost {
 	}
 
 
-	/*
-	 * init the plugin
+	/**
+	 * Registers Mailster delivery hooks or shows the missing-Mailster notice.
 	 *
-	 * @access public
+	 * @since 1.0
+	 *
 	 * @return void
 	 */
 	public function init() {
@@ -57,13 +101,12 @@ class MailsterSparkPost {
 
 
 	/**
-	 * initsend function.
+	 * Configures the Mailster mail object for SparkPost SMTP or WEB API sending.
 	 *
-	 * uses mailster_initsend hook to set initial settings
+	 * @since 1.0
 	 *
-	 * @access public
+	 * @param object $mailobject Mailster mail object being prepared.
 	 * @return void
-	 * @param mixed $mailobject
 	 */
 	public function initsend( $mailobject ) {
 
@@ -100,13 +143,12 @@ class MailsterSparkPost {
 
 
 	/**
-	 * presend function.
+	 * Builds the SparkPost transmission payload before each message is sent.
 	 *
-	 * uses the mailster_presend hook to apply settings before each mail
+	 * @since 1.0
 	 *
-	 * @access public
+	 * @param object $mailobject Mailster mail object for the current send.
 	 * @return void
-	 * @param mixed $mailobject
 	 */
 	public function presend( $mailobject ) {
 
@@ -237,13 +279,12 @@ class MailsterSparkPost {
 
 
 	/**
-	 * dosend function.
+	 * Sends the message via SMTP or the SparkPost transmissions API.
 	 *
-	 * uses the mailster_dosend hook and triggers the send
+	 * @since 1.0
 	 *
-	 * @access public
-	 * @param mixed $mailobject
-	 * @return void
+	 * @param object $mailobject Mailster mail object ready to send.
+	 * @return bool|void False when WEB API options are missing; otherwise void.
 	 */
 	public function dosend( $mailobject ) {
 
@@ -285,13 +326,12 @@ class MailsterSparkPost {
 
 
 	/**
-	 * delivery_method function.
+	 * Adds SparkPost to the list of Mailster delivery methods.
 	 *
-	 * add the delivery method to the options
+	 * @since 1.0
 	 *
-	 * @access public
-	 * @param mixed $delivery_methods
-	 * @return void
+	 * @param array $delivery_methods Existing delivery method labels keyed by slug.
+	 * @return array Filtered delivery methods including SparkPost.
 	 */
 	public function delivery_method( $delivery_methods ) {
 		$delivery_methods['sparkpost'] = 'SparkPost';
@@ -300,11 +340,10 @@ class MailsterSparkPost {
 
 
 	/**
-	 * deliverytab function.
+	 * Renders the SparkPost settings fields on the delivery method tab.
 	 *
-	 * the content of the tab for the options
+	 * @since 1.0
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function deliverytab() {
@@ -315,19 +354,45 @@ class MailsterSparkPost {
 	}
 
 
+	/**
+	 * Performs a GET request against the SparkPost API.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $endpoint API endpoint path relative to `/api/v1/`.
+	 * @param array  $args     Optional. Query arguments. Default empty array.
+	 * @param int    $timeout  Optional. Request timeout in seconds. Default 15.
+	 * @return object|WP_Error Decoded response body or error.
+	 */
 	public function do_get( $endpoint, $args = array(), $timeout = 15 ) {
 		return $this->do_call( 'GET', $endpoint, $args, $timeout );
 	}
+
+	/**
+	 * Performs a POST request against the SparkPost API.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $endpoint API endpoint path relative to `/api/v1/`.
+	 * @param array  $args     Optional. JSON body arguments. Default empty array.
+	 * @param int    $timeout  Optional. Request timeout in seconds. Default 15.
+	 * @return object|WP_Error Decoded response body or error.
+	 */
 	public function do_post( $endpoint, $args = array(), $timeout = 15 ) {
 		return $this->do_call( 'POST', $endpoint, $args, $timeout );
 	}
 
 
 	/**
+	 * Sends an authenticated HTTP request to the SparkPost REST API.
 	 *
-	 * @access public
-	 * @param unknown $apikey  (optional)
-	 * @return void
+	 * @since 1.0
+	 *
+	 * @param string $method   HTTP method (`GET` or `POST`).
+	 * @param string $endpoint API endpoint path relative to `/api/v1/`.
+	 * @param array  $args     Optional. Query or body arguments. Default empty array.
+	 * @param int    $timeout  Optional. Request timeout in seconds. Default 15.
+	 * @return object|WP_Error Decoded response body or error.
 	 */
 	private function do_call( $method, $endpoint, $args = array(), $timeout = 15 ) {
 
@@ -392,9 +457,13 @@ class MailsterSparkPost {
 
 
 	/**
+	 * Verifies SparkPost account access for the given API credentials.
 	 *
-	 * @access public
-	 * @return void
+	 * @since 1.0
+	 *
+	 * @param string|null     $apikey     Optional. API key override. Default null uses saved option.
+	 * @param int|string|null $subaccount Optional. Subaccount ID override. Default null uses saved option.
+	 * @return object|WP_Error Account response or error.
 	 */
 	public function verify( $apikey = null, $subaccount = null ) {
 
@@ -416,9 +485,11 @@ class MailsterSparkPost {
 
 
 	/**
+	 * Fetches sending domains configured on the SparkPost account.
 	 *
-	 * @access public
-	 * @return void
+	 * @since 1.0
+	 *
+	 * @return array|WP_Error List of domain result objects or error.
 	 */
 	public function get_sending_domains() {
 
@@ -434,9 +505,11 @@ class MailsterSparkPost {
 	}
 
 	/**
+	 * Fetches subaccounts available on the SparkPost account.
 	 *
-	 * @access public
-	 * @return void
+	 * @since 1.0
+	 *
+	 * @return array|WP_Error List of subaccount result objects or error.
 	 */
 	public function get_subaccounts() {
 
@@ -454,10 +527,12 @@ class MailsterSparkPost {
 
 
 	/**
+	 * Validates SparkPost options when Mailster settings are saved.
 	 *
-	 * @access public
-	 * @param mixed $options
-	 * @return void
+	 * @since 1.0
+	 *
+	 * @param array $options Mailster options being saved.
+	 * @return array Filtered options with verification state and send limits.
 	 */
 	public function verify_options( $options ) {
 
@@ -510,10 +585,11 @@ class MailsterSparkPost {
 
 
 	/**
-	 * check_bounces function.
+	 * Syncs bounce and complaint events from SparkPost into Mailster subscribers.
 	 *
-	 * @access public
-	 * @return void
+	 * @since 1.0
+	 *
+	 * @return bool|void False when bounce checks are locked or unverified; otherwise void.
 	 */
 	public function check_bounces() {
 
@@ -612,6 +688,14 @@ class MailsterSparkPost {
 	}
 
 
+	/**
+	 * Adds SparkPost-specific strings to Mailster subscriber error patterns.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $errors Existing subscriber error strings.
+	 * @return array Filtered error strings.
+	 */
 	public function subscriber_errors( $errors ) {
 		$errors[] = 'Message generation rejected';
 		return $errors;
@@ -619,12 +703,10 @@ class MailsterSparkPost {
 
 
 	/**
-	 * section_tab_bounce function.
+	 * Prints a notice that bounce settings are ignored when using SparkPost.
 	 *
-	 * displays a note on the bounce tab
+	 * @since 1.0
 	 *
-	 * @access public
-	 * @param mixed $options
 	 * @return void
 	 */
 	public function section_tab_bounce() {
@@ -638,9 +720,10 @@ class MailsterSparkPost {
 
 
 	/**
-	 * Notice if Mailster is not available
+	 * Shows an admin notice when Mailster is missing or too old.
 	 *
-	 * @access public
+	 * @since 1.0
+	 *
 	 * @return void
 	 */
 	public function notice() {
@@ -656,9 +739,10 @@ class MailsterSparkPost {
 
 
 	/**
-	 * activate function
+	 * Sets default SparkPost options and prompts to choose the delivery method.
 	 *
-	 * @access public
+	 * @since 1.0
+	 *
 	 * @return void
 	 */
 	public function activate() {
@@ -689,9 +773,10 @@ class MailsterSparkPost {
 
 
 	/**
-	 * deactivate function
+	 * Falls back to the simple delivery method when SparkPost was active.
 	 *
-	 * @access public
+	 * @since 1.0
+	 *
 	 * @return void
 	 */
 	public function deactivate() {
